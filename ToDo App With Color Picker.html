@@ -1,0 +1,162 @@
+<html>
+<head>
+    <link rel='stylesheet' href="http://bgrins.github.com/spectrum/spectrum.css" />
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        table#t01 tr:nth-child(even) {
+            background-color: #eee;
+        }
+
+        table#t01 tr:nth-child(odd) {
+            background-color: #fff;
+        }
+
+        table#t01 th {
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <u>TO DO LIST</u>
+        <br /><br />
+
+
+        <div>
+            Appy Color:
+            <input type="checkbox" id="applyColor" />
+        </div>
+
+        <!--<select id="colorPicker" style="display: none;">
+            <option value="green">Green</option>
+            <option value="blue">Blue</option>
+            <option value="red">Red</option>
+        </select>-->
+
+        <input type="text" id="colorPicker" />
+
+        <br />
+        <br />
+
+        <input type="text" id="txtToDoItem" />
+        <span id="error" style="color: red; display:none;">Please enter something.</span>
+        <input type="button" value="Add Item" id="addItem" />
+
+        <br /><br />
+
+        <table id="todoList">
+            <tr>
+                <th>Items</th>
+                <th>Is Done</th>
+            </tr>
+        </table>
+
+    </center>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="http://bgrins.github.com/spectrum/spectrum.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("#addItem").on("click", function () {
+
+                var todoItem = $("#txtToDoItem").val();
+
+                if (!todoItem) {
+                    $("#error").show();
+                    return;
+                } else {
+                    $("#error").hide();
+                }
+
+                $("#txtToDoItem").val("");
+
+                var $tr = $("<tr>");
+
+                var $chk = $("<input type='checkbox' />");
+
+                $chk.on("click", function (e) {
+
+                    if ($(this).is(":checked")) {
+                        $(this).parent().prev().css("text-decoration", "line-through");
+                    } else {
+                        $(this).parent().prev().css("text-decoration", "");
+                    }
+
+                });
+
+                var $secondaryTd = $("<td>");
+                $secondaryTd.append($chk);
+
+                $tr.append("<td>" + todoItem + "</td>")
+                    .append($secondaryTd);
+
+                if ($("#applyColor").is(":checked")) {
+                    var selectedColor = $("#colorPicker").val();
+                    $tr.css("color", selectedColor);
+                }
+
+                $("#todoList").append($tr);
+
+            });
+
+            $("#color").on("click", function () {
+
+                $("#todoList tr").each(function (i, e) {
+
+                    if (i % 2 !== 0) {
+                        $(e).css("color", "red");
+                    }
+
+                });
+
+            });
+
+            $("#colorPicker").spectrum({
+                color: "#ffff",
+                preferredFormat: "hex"
+            });
+
+            $("#colorPicker").on("change", function () {
+                if ($("#applyColor").is(":checked")) {
+                    changeColor();
+                }
+            });
+
+            $("#applyColor").on("change", function () {
+                if ($(this).is(":checked")) {
+                    $("#colorPicker").show();
+                    changeColor();
+                }
+                else {
+                    $("#colorPicker").hide();
+                    $("#todoList tr").css("color", "");
+                }
+            });
+
+        });
+
+        function changeColor() {
+            var selectedColor = $("#colorPicker").val();
+            $("#todoList tr").css("color", selectedColor);
+            debugger;
+            onColorChange();
+        }
+
+        function onColorChange() {
+            console.log("color changed");
+        }
+    </script>
+</body>
+</html>
