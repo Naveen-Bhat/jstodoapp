@@ -111,18 +111,6 @@
 
             });
 
-            $("#color").on("click", function () {
-
-                $("#todoList tr").each(function (i, e) {
-
-                    if (i % 2 !== 0) {
-                        $(e).css("color", "red");
-                    }
-
-                });
-
-            });
-
             $("#colorPicker").spectrum({
                 color: "#ffff",
                 preferredFormat: "hex"
@@ -144,6 +132,8 @@
                     $("#todoList tr").css("color", "");
                 }
             });
+
+            alert("test");
 
         });
 
